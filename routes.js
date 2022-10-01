@@ -46,6 +46,28 @@ router.post("/add/", async function (req, res, next) {
   }
 });
 
+// ############################################################
+// EXERCISE METHODS
+
+router.get("/search/", async function (req, res, next) {
+  try {
+    const name = req.query.name;
+    const customers = await Customer.searchByName(name);
+    return res.render("customer_list.html", { customers });
+  } catch (err) {
+    return next(err);
+  }
+});
+
+router.get("/top-customers/", async function (req, res, next) {
+  try {
+    const customers = await Customer.topCustomers();
+    return res.render("customer_list.html", { customers });
+  } catch (err) {
+    return next(err);
+  }
+});
+
 /** Show a customer, given their ID. */
 
 router.get("/:id/", async function (req, res, next) {
@@ -107,20 +129,6 @@ router.post("/:id/add-reservation/", async function (req, res, next) {
     await reservation.save();
 
     return res.redirect(`/${customerId}/`);
-  } catch (err) {
-    return next(err);
-  }
-});
-
-// ############################################################
-// EXERCISE METHODS
-
-router.post("/search/", async function (req, res, next) {
-  try {
-    const { name } = req.body;
-    const customers = await Customer.searchByName(name);
-    console.log(customers);
-    return res.render("customer_list.html", { customers });
   } catch (err) {
     return next(err);
   }

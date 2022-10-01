@@ -80,10 +80,36 @@ class Customer {
       err.status = 404;
       throw err;
     }
-
     return results.rows.map((c) => new Customer(c));
   }
 
+  static async topCustomers() {
+    const results = await db.query(
+      `
+      SELECT 
+      c.id, 
+      c.first_name AS "firstName",  
+      c.last_name AS "lastName", 
+      c.phone, 
+      c.notes,
+      count( r.id ) as total
+      from customers as c
+      join reservations as r
+      on c.id = r.customer_id
+      group by c.id
+      order by total DESC
+      limit 10`
+    );
+
+    const customers = results.rows;
+
+    if (customers === undefined) {
+      const err = new Error(`No customer with reservations`);
+      err.status = 404;
+      throw err;
+    }
+    return results.rows.map((c) => new Customer(c));
+  }
   /** get all reservations for this customer. */
 
   async getReservations() {
