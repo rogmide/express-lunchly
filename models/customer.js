@@ -57,6 +57,33 @@ class Customer {
     return new Customer(customer);
   }
 
+  static async searchByName(name) {
+    const results = await db.query(
+      `
+      SELECT
+      id, 
+      first_name AS "firstName",  
+      last_name AS "lastName", 
+      phone, 
+      notes
+      FROM
+      customers
+      WHERE
+      lower( REPLACE ( CONCAT ( first_name, last_name ), ' ', '' ) ) LIKE '%${name.toLowerCase()}%'
+      ORDER BY last_name asc`
+    );
+
+    const customers = results.rows;
+
+    if (customers === undefined) {
+      const err = new Error(`No such customer: ${name}`);
+      err.status = 404;
+      throw err;
+    }
+
+    return results.rows.map((c) => new Customer(c));
+  }
+
   /** get all reservations for this customer. */
 
   async getReservations() {

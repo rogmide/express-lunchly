@@ -112,4 +112,18 @@ router.post("/:id/add-reservation/", async function (req, res, next) {
   }
 });
 
+// ############################################################
+// EXERCISE METHODS
+
+router.post("/search/", async function (req, res, next) {
+  try {
+    const { name } = req.body;
+    const customers = await Customer.searchByName(name);
+    console.log(customers);
+    return res.render("customer_list.html", { customers });
+  } catch (err) {
+    return next(err);
+  }
+});
+
 module.exports = router;
