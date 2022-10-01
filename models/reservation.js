@@ -15,6 +15,19 @@ class Reservation {
     this.notes = notes;
   }
 
+  get numGuests() {
+    return this._numGuests;
+  }
+
+  set numGuests(num) {
+    if (num === "0") {
+      console.log("here");
+      throw new Error(`GUEST: Wrong Number of Guest`);
+    }
+
+    this._numGuests = num;
+  }
+
   /** formatter for startAt */
 
   getformattedStartAt() {
@@ -34,7 +47,6 @@ class Reservation {
          WHERE customer_id = $1`,
       [customerId]
     );
-
     return results.rows.map((row) => new Reservation(row));
   }
 
