@@ -14,7 +14,7 @@ class Customer {
     this.notes = notes;
   }
 
-  fullName() {
+  get fullName() {
     return `${this.firstName} ${this.lastName}`;
   }
 
