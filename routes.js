@@ -121,12 +121,14 @@ router.post("/:id/add-reservation/", async function (req, res, next) {
     const notes = req.body.notes;
 
     const reservation = new Reservation({
-      customerId,
-      startAt,
+      // customerId,
+      // startAt,
       // numGuests,
       notes,
     });
     reservation.numGuests = numGuests;
+    reservation.startAt = startAt;
+    reservation.customerId = customerId;
     await reservation.save();
 
     return res.redirect(`/${customerId}/`);

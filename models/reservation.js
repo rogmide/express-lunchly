@@ -21,11 +21,26 @@ class Reservation {
 
   set numGuests(num) {
     if (num === "0") {
-      console.log("here");
       throw new Error(`GUEST: Wrong Number of Guest`);
     }
 
     this._numGuests = num;
+  }
+
+  get startAt() {
+    return this._startAt;
+  }
+
+  set startAt(date) {
+    this._startAt = date;
+  }
+
+  get customerId() {
+    return this._customerId;
+  }
+
+  set customerId(id) {
+    this._customerId = id;
   }
 
   /** formatter for startAt */
